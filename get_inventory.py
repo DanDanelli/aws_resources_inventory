@@ -51,11 +51,11 @@ def search_resources(master_account, ops_role_name, region):
         logging.error(f"An unexpected error occurred: {e}")
 
 def print_help():
-    print('Usage: main.py --region <region> --master_account <master_account> --ops_role_name <ops_role_name>')
-    print('Options:')
+    print('Usage: get_inventory.py --region <region> --master_account <master_account> --ops_role_name <ops_role_name>')
+    print('Required Args:')
     print('  --region              Specify the AWS region')
     print('  --master_account      Specify the master account ID')
-    print('  --ops_role_name           Specify the role name')
+    print('  --ops_role_name       Specify the role name')
     print('  -h, --help            Show this help message and exit')
 
 def main(argv):
