@@ -11,7 +11,8 @@ Considering different scenarios:
     In this scenario, it will be considered that there is a landing zone consisting of:
         - Master Account (Where the OUs are configured)
         - Operational Account (Responsible for assuming a role in the Linked Accounts and describing the resources)
-    Python will assume role from Operational Account, get in Master Account to list all Linked Accounts in Organizations and will enter in each Linked Account listed and describe according with resource filter from the region informed.
+    Python will assume role from Operational Account, get in Master Account to list all Linked Accounts in Organizations and 
+    will enter in each Linked Account listed and describe according with resource filter from the region informed.
 
   ![image](https://github.com/user-attachments/assets/eff70b76-9c0f-4af7-85ed-418f3cc80dd0)
   ![image](https://github.com/user-attachments/assets/94f4a774-40c0-466d-aa66-9c427773eba9)
