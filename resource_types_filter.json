@@ -3,6 +3,46 @@
         {
             "resource": "ec2",
             "type": "instance"
+        },
+        {
+            "resource": "s3",
+            "type": "bucket"
+        },
+        {
+            "resource": "rds",
+            "type": "db"
+        },
+        {
+            "resource": "apigateway",
+            "type": "api"
+        },
+        {
+            "resource": "lambda",
+            "type": "None"
+        },
+        {
+            "resource": "transfer",
+            "type": "server"
+        },
+        {
+            "resource": "ecs",
+            "type": "cluster"
+        },
+        {
+            "resource": "eks",
+            "type": "cluster"
+        },
+        {
+            "resource": "sns",
+            "type": "None"
+        },
+        {
+            "resource": "sqs",
+            "type": "None"
+        },
+        {
+            "resource": "cloudfront",
+            "type": "None"
         }
     ]
 }
