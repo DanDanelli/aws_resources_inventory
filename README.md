@@ -1,7 +1,7 @@
 
 # AWS Resources Inventory
 
-A script that list and describe AWS resources for inventory purpose.
+A script that lists and describes AWS resources for inventory purpose.
 
 
 ## Documentation
