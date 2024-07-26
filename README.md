@@ -51,3 +51,7 @@ Required Args:
   --ops_role_name       Specify the role name
   -h, --help            Show this help message and exit
 ```
+# Output demo
+Filtered for search ec2_instance and s3_bucket
+![image](https://github.com/user-attachments/assets/b2a0ec26-a99d-4d17-8cf0-986393cb3285)
+![image](https://github.com/user-attachments/assets/e0cac08d-d43a-4b8c-893e-19febc0c906d)
