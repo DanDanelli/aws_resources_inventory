@@ -1,0 +1,8 @@
+{
+    "resource_types":[
+        {
+            "resource": "ec2",
+            "type": "instance"
+        }
+    ]
+}
