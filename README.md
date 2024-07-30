@@ -65,10 +65,8 @@ Filtered for search ec2_instance and s3_bucket
 
 ## Standalone Account
  In this scenario, it will be considered just a standalone account:
-    - IAM User
-  ![image](https://github.com/user-attachments/assets/b8d9b320-0388-4f15-a91f-0776aba97f39)
+  ![image](https://github.com/user-attachments/assets/01892116-3563-473a-83de-90111b50d529)
 ### Usage/Examples
-- Create IAM User
 - Configure Standalone Account
 ```bash
   $ cat ~/.aws/credentials
