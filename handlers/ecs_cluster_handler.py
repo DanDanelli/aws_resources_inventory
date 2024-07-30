@@ -1,7 +1,8 @@
 from botocore.exceptions import ClientError
+import boto3
 
-def handle_ecs_cluster(session, account_name, region):
-    client = session.client('ecs', region_name=region)
+def handle_ecs_cluster(region):
+    client = boto3.client('ecs', region_name=region)
     cluster_data = []
 
     try:
@@ -56,8 +57,7 @@ def handle_ecs_cluster(session, account_name, region):
             'Cluster Active Services Count': cluster['activeServicesCount'],
             'Services': service_data,
             'Tags': cluster_tags,
-            'Region': region,
-            'Account': account_name
+            'Region': region
         })
 
     return cluster_data

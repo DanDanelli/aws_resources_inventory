@@ -1,7 +1,8 @@
 from botocore.exceptions import ClientError
+import boto3
 
-def handle_cloudfront(session, account_name, region):
-    cloudfront_client = session.client('cloudfront', region_name=region)
+def handle_cloudfront(region):
+    cloudfront_client = boto3.client('cloudfront', region_name=region)
     cloudfront_data = []
 
     try:
@@ -19,7 +20,6 @@ def handle_cloudfront(session, account_name, region):
                     'Status': distribution['Status'],
                     'Enabled': distribution['Enabled'],
                     'Tags': tags_dict,
-                    'Account': account_name,
                     'Region': region
                 })
     except ClientError as error:

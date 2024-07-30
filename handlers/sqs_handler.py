@@ -1,8 +1,8 @@
 import boto3
 from botocore.exceptions import ClientError
 
-def handle_sqs(session, account_name, region):
-    sqs_client = session.client('sqs', region_name=region)
+def handle_sqs(region):
+    sqs_client = boto3.client('sqs', region_name=region)
     sqs_data = []
 
     try:
@@ -28,7 +28,6 @@ def handle_sqs(session, account_name, region):
                     'Queue URL': queue_url,
                     'Attributes': attributes,
                     'Tags': tags,
-                    'Account': account_name,
                     'Region': region
                 })
             except ClientError as error:

@@ -1,4 +1,5 @@
 import botocore.exceptions
+import boto3
 
 def format_size(megabytes):
     """Convert megabytes to a more readable format."""
@@ -14,8 +15,8 @@ def format_size(megabytes):
         size = megabytes / 1024**2
         return f"{size:.0f} TB" if size.is_integer() else f"{size:.2f} TB"
 
-def handle_ec2_instance(session, account_name, region):
-    client = session.client('ec2', region_name=region)
+def handle_ec2_instance(region):
+    client = boto3.client('ec2', region_name=region)
     instance_type_cache = {}
     instance_data = []
 
@@ -54,8 +55,7 @@ def handle_ec2_instance(session, account_name, region):
                         'Memory (MiB)': format_size(instance_type_details['MemoryInfo']['SizeInMiB']),
                         'Volumes': volume_info,  # Updated to include volume IDs and sizes
                         'Tags': instance.get('Tags', []),
-                        'Region': region,
-                        'Account': account_name,
+                        'Region': region
                     })
     except botocore.exceptions.ClientError as e:
         print(f"An error occurred: {e}")

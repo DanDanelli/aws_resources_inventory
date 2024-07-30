@@ -1,8 +1,9 @@
 import botocore
+import boto3
 
-def handle_lambda(session, account_name, region):
+def handle_lambda(region):
     
-    client = session.client('lambda', region_name=region)
+    client = boto3.client('lambda', region_name=region)
     lambda_data = []
     # Function to format the size of the Lambda function
     def format_size(bytes):
@@ -38,8 +39,7 @@ def handle_lambda(session, account_name, region):
                     'Memory Size': format_size(function['MemorySize']),
                     'CodeSize': format_size(function['CodeSize']),
                     'Tags': tags,
-                    'Region': region,
-                    'Account': account_name,
+                    'Region': region
                     }
                 )
             

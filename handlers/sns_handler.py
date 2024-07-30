@@ -1,8 +1,8 @@
 import boto3
 import botocore
 
-def handle_sns(session, account_name, region):
-    sns_client = session.client('sns', region_name=region)
+def handle_sns(region):
+    sns_client = boto3.client('sns', region_name=region)
     sns_data = []
 
     try:
@@ -30,8 +30,7 @@ def handle_sns(session, account_name, region):
                     'Owner': topic_owner,
                     'Subscriptions Count': topic_subscriptions_count,
                     'Tags': tags,
-                    'Region': region,
-                    'Account': account_name,
+                    'Region': region
                 })
 
         return sns_data

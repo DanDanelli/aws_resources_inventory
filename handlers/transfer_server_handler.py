@@ -1,5 +1,7 @@
-def handle_transfer_server(session, account_name, region):
-    transfer_client = session.client('transfer', region_name=region)
+import boto3
+
+def handle_transfer_server(region):
+    transfer_client = boto3.client('transfer', region_name=region)
     transfer_data = []
     marker = None
     try:
@@ -23,8 +25,7 @@ def handle_transfer_server(session, account_name, region):
                     'Server ID': server_id,
                     'State': server_state,
                     'Tags': tags,
-                    'Region': region,
-                    'Account': account_name,
+                    'Region': region
                 })
 
             marker = servers.get('NextMarker')

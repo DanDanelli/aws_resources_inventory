@@ -1,5 +1,6 @@
 from botocore.exceptions import BotoCoreError, ClientError
 import re
+import boto3
 
 # Function to format the size of the RDS instance
 def format_size(gigabytes):
@@ -17,8 +18,8 @@ def is_valid_identifier(instance_id):
     pattern = r'^[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9]$'
     return bool(re.match(pattern, instance_id))
 
-def handle_rds_db(session, account_name, region):
-    rds_client = session.client('rds', region_name=region)
+def handle_rds_db(region):
+    rds_client = boto3.client('rds', region_name=region)
     db_data = []
     marker = None
 
@@ -50,8 +51,7 @@ def handle_rds_db(session, account_name, region):
                     'Endpoint': instance['Endpoint']['Address'],
                     'Port': instance['Endpoint']['Port'],
                     'Tags': tags,
-                    'Region': region,
-                    'Account': account_name
+                    'Region': region
                 })
 
             # Update marker for next iteration

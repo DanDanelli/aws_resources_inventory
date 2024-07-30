@@ -1,7 +1,8 @@
 from botocore.exceptions import ClientError
+import boto3
 
-def handle_dynamodb(session, account_name, region):
-    dynamodb_client = session.client('dynamodb', region_name=region)
+def handle_dynamodb(region):
+    dynamodb_client = boto3.client('dynamodb', region_name=region)
     dynamodb_data = []
 
     try:
@@ -21,7 +22,6 @@ def handle_dynamodb(session, account_name, region):
                         'Table Name': table_name,
                         'Status': table_status,
                         'Tags': tags,
-                        'Account': account_name,
                         'Region': region
                     })
                 except ClientError as error:

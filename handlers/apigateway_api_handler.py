@@ -1,7 +1,8 @@
 from botocore.exceptions import ClientError
+import boto3
 
-def handle_apigateway_api(session, account_name, region):
-    client = session.client('apigateway', region_name=region)
+def handle_apigateway_api(region):
+    client = boto3.client('apigateway', region_name=region)
     apigw_data = []
 
     try:
@@ -15,8 +16,7 @@ def handle_apigateway_api(session, account_name, region):
                     'Name': apigtw['name'],
                     'Description': apigtw.get('description', 'No description available'),
                     'Tags': tags,
-                    'Region': region,
-                    'Account': account_name
+                    'Region': region
                 })
     except ClientError as e:
         print(f"Error retrieving API Gateway data: {e}")

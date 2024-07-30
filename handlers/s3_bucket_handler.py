@@ -1,6 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
 import botocore
 import os
+import boto3
 
 # Function to format the size of the S3 bucket
 def format_size(bytes):
@@ -16,11 +17,9 @@ def format_size(bytes):
     else:
         return f"{bytes / (1024**4):.2f} TB"
 
-import botocore
-
-def process_bucket(bucket, session, region, account_name):
+def process_bucket(bucket, region):
     try:
-        client = session.client('s3', region_name=region)
+        client = boto3.client('s3', region_name=region)
         
         # Initialize total size and object count
         total_size = 0
@@ -60,8 +59,7 @@ def process_bucket(bucket, session, region, account_name):
             'Size': formatted_size,
             'Objects': total_objects,
             'Region': bucket_location['LocationConstraint'] if 'LocationConstraint' in bucket_location else 'no region specified',
-            'Tags': bucket_details['TagSet'],
-            'Account': account_name
+            'Tags': bucket_details['TagSet']
         }
 
         return bucket_data
@@ -70,9 +68,10 @@ def process_bucket(bucket, session, region, account_name):
         print(f"Error processing bucket {bucket['Name']}: {error}")
         return None
 
-def handle_s3_bucket(session, account_name, region):
-    client = session.client('s3', region_name=region)
-    credentials = session.get_credentials()
+def handle_s3_bucket(region):
+    session = boto3.Session(region_name=region)
+    client = session.client('s3')
+    credentials = session.get_credentials().get_frozen_credentials()
     all_buckets = client.list_buckets()
 
     new_env = os.environ.copy()
@@ -82,7 +81,7 @@ def handle_s3_bucket(session, account_name, region):
 
     bucket_data = []
     with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = [executor.submit(process_bucket, bucket, session, region, account_name) for bucket in all_buckets['Buckets']]
+        futures = [executor.submit(process_bucket, bucket, region) for bucket in all_buckets['Buckets']]
         for future in futures:
             result = future.result()
             if result:

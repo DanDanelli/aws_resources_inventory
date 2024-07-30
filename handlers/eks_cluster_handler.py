@@ -1,7 +1,8 @@
 from botocore.exceptions import ClientError
+import boto3
 
-def handle_eks_cluster(session, account_name, region):
-    client = session.client('eks', region_name=region)
+def handle_eks_cluster(region):
+    client = boto3.client('eks', region_name=region)
     cluster_data = []
 
     try:
@@ -18,9 +19,7 @@ def handle_eks_cluster(session, account_name, region):
                         'Kubernetes Version': cluster['version'],
                         'endpoint': cluster['endpoint'],
                         'Tags': tags,
-                        'Account': account_name,
-                        'Region': region,
-                        'Account': account_name
+                        'Region': region
                     })
                 except ClientError as e:
                     print(f"Error describing cluster {cluster_name}: {e}")
