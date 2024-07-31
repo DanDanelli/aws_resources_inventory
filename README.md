@@ -60,7 +60,7 @@ Required Args:
 ```
 #### Output demo
 Filtered for search ec2_instance and s3_bucket
-![image](https://github.com/user-attachments/assets/b2a0ec26-a99d-4d17-8cf0-986393cb3285)
+![image](https://github.com/user-attachments/assets/33d13380-fd69-4ea4-8ea7-085f17ddf17a)
 ![image](https://github.com/user-attachments/assets/e0cac08d-d43a-4b8c-893e-19febc0c906d)
 
 ## Standalone Account
@@ -85,7 +85,7 @@ Required Args:
 ```
 #### Output demo
 Filtered for search ec2_instance
-![image](https://github.com/user-attachments/assets/b34ee5f1-eced-43f5-ab56-7dac43880993)
+![image](https://github.com/user-attachments/assets/e1e79dc8-df4a-4053-a8d0-380f9cb84789)
 
 # Conclusion
 The process_resource function is a versatile tool for gathering inventory data across various AWS services. By extending this function to include additional services, you can create a comprehensive inventory management solution for your AWS environment.
