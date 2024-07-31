@@ -37,7 +37,12 @@ def handle_ec2_instance(region):
                             volume_id = mapping['Ebs']['VolumeId']
                             volume_details = client.describe_volumes(VolumeIds=[volume_id])['Volumes'][0]
                             volume_size = volume_details['Size']  # Size in GiB
-                            volume_info.append({'Volume ID': volume_id, 'Size (GiB)': volume_size})
+                            is_root = mapping.get('DeviceName') == instance.get('RootDeviceName')
+                            volume_info.append({
+                                'Volume ID': volume_id, 
+                                'Size (GiB)': volume_size,
+                                'Type': 'Root' if is_root else 'EBS'
+                            })
 
                     # Attempt to find a 'Name' tag for the instance
                     instance_name = next((tag['Value'] for tag in instance.get('Tags', []) if tag['Key'] == 'Name'), None)
@@ -46,6 +51,7 @@ def handle_ec2_instance(region):
                     if not instance_name:
                         instance_name = f"Unnamed Instance ({instance['InstanceId']})"
                     instance_data.append({
+                        'ID': instance['InstanceId'],
                         'Name': instance_name,
                         'Type': instance['InstanceType'],
                         'State': instance['State']['Name'],
