@@ -1,7 +1,8 @@
+import boto3
 from concurrent.futures import ThreadPoolExecutor
 import botocore
 import os
-import boto3
+from datetime import datetime, timedelta
 
 # Function to format the size of the S3 bucket
 def format_size(bytes):
@@ -24,6 +25,7 @@ def process_bucket(bucket, region):
         # Initialize total size and object count
         total_size = 0
         total_objects = 0
+        storage_class = 'STANDARD'
         
         # Create a paginator for listing all versions of objects in the bucket
         paginator = client.get_paginator('list_object_versions')
@@ -36,6 +38,7 @@ def process_bucket(bucket, region):
                 for version in page['Versions']:
                     total_size += version['Size']
                     total_objects += 1
+                    storage_class = version.get('StorageClass', 'STANDARD')  # Default to 'STANDARD' if not present
             # Optionally, count delete markers if needed
             # if "DeleteMarkers" in page:
             #     for delete_marker in page['DeleteMarkers']:
@@ -53,13 +56,36 @@ def process_bucket(bucket, region):
             else:
                 raise e
         
+        
+        # Fetch lifecycle configuration for the bucket
+        try:
+            lifecycle_configuration = client.get_bucket_lifecycle_configuration(Bucket=bucket['Name'])
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == 'NoSuchLifecycleConfiguration':
+                lifecycle_configuration = {'Rules': [{'ID': 'No Lifecycle', 'Status': 'No Lifecycle'}]}
+            else:
+                raise e
+        
+        # Check for cross-region replication configuration
+        try:
+            replication_configuration = client.get_bucket_replication(Bucket=bucket['Name'])
+            replication_status = 'Enabled'
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == 'ReplicationConfigurationNotFoundError':
+                replication_status = 'Not Configured'
+            else:
+                raise e
+
         bucket_location = client.get_bucket_location(Bucket=bucket['Name'])
         bucket_data = {
             'Name': bucket['Name'],
+            'StorageClass': storage_class,
+            'Lifecycle': lifecycle_configuration['Rules'],
             'Size': formatted_size,
             'Objects': total_objects,
-            'Region': bucket_location['LocationConstraint'] if 'LocationConstraint' in bucket_location else 'no region specified',
-            'Tags': bucket_details['TagSet']
+            'ReplicationStatus': replication_status,
+            'Tags': bucket_details['TagSet'],
+            'Region': bucket_location['LocationConstraint'] if 'LocationConstraint' in bucket_location else 'no region specified'
         }
 
         return bucket_data
