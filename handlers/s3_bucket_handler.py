@@ -16,8 +16,6 @@ def format_size(bytes):
     else:
         return f"{bytes / (1024**4):.2f} TB"
 
-import botocore
-
 def process_bucket(bucket, session, region, account_name):
     try:
         client = session.client('s3', region_name=region)
@@ -57,6 +55,7 @@ def process_bucket(bucket, session, region, account_name):
         bucket_location = client.get_bucket_location(Bucket=bucket['Name'])
         bucket_data = {
             'Name': bucket['Name'],
+            'StorageClass': bucket['StorageClass'],
             'Size': formatted_size,
             'Objects': total_objects,
             'Region': bucket_location['LocationConstraint'] if 'LocationConstraint' in bucket_location else 'no region specified',
