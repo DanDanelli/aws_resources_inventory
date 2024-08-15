@@ -94,7 +94,7 @@ def process_bucket(bucket, region):
         print(f"Error processing bucket {bucket['Name']}: {error}")
         return None
 
-def handle_s3_bucket(region):
+def handle_s3_bucket(session, account_name, region):
     session = boto3.Session(region_name=region)
     client = session.client('s3')
     credentials = session.get_credentials().get_frozen_credentials()
