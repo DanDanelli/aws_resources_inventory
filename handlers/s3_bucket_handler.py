@@ -18,7 +18,7 @@ def format_size(bytes):
     else:
         return f"{bytes / (1024**4):.2f} TB"
 
-def process_bucket(bucket, region):
+def process_bucket(bucket, region, account_name):
     try:
         client = boto3.client('s3', region_name=region)
         
@@ -85,7 +85,8 @@ def process_bucket(bucket, region):
             'Objects': total_objects,
             'ReplicationStatus': replication_status,
             'Tags': bucket_details['TagSet'],
-            'Region': bucket_location['LocationConstraint'] if 'LocationConstraint' in bucket_location else 'no region specified'
+            'Region': bucket_location['LocationConstraint'] if 'LocationConstraint' in bucket_location else 'no region specified',
+            'Account': account_name
         }
 
         return bucket_data
@@ -107,7 +108,7 @@ def handle_s3_bucket(session, account_name, region):
 
     bucket_data = []
     with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = [executor.submit(process_bucket, bucket, region) for bucket in all_buckets['Buckets']]
+        futures = [executor.submit(process_bucket, bucket, region, account_name) for bucket in all_buckets['Buckets']]
         for future in futures:
             result = future.result()
             if result:
