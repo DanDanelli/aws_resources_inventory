@@ -10,7 +10,7 @@ This script is designed to gather inventory data for various AWS resources. This
 helps in auditing and managing AWS resources by collecting detailed information about each resource. Additionally, it supports parallel processing to 
 efficiently handle large volumes of data across multiple AWS services.
 # Branches
-- [Identity Center Multi-Account](https://github.com/DanDanelli/aws_resources_inventory/tree/ident._center-multi_account)
+- [Identity Center Multi-Account](https://github.com/DanDanelli/aws_resources_inventory/tree/ident_center-multi_account)
 - [Standalone Account](https://github.com/DanDanelli/aws_resources_inventory/tree/standalone-account)
 # Documentation
 Considering different scenarios:
