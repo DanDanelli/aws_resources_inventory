@@ -4,15 +4,21 @@ def format_size(megabytes):
     """Convert megabytes to a more readable format."""
     if megabytes < 1:
         size = megabytes * 1024
-        return f"{size:.0f} KB" if size.is_integer() else f"{size:.2f} KB"
+        return f"{size:.0f} KB" if float(size).is_integer() else f"{size:.2f} KB"
     elif megabytes < 1024:
-        return f"{megabytes:.0f} MB" if megabytes.is_integer() else f"{megabytes:.2f} MB"
+        # ``megabytes`` may be an ``int`` which does not implement ``is_integer``.
+        # Cast to ``float`` before checking to avoid ``AttributeError``.
+        return (
+            f"{megabytes:.0f} MB"
+            if float(megabytes).is_integer()
+            else f"{megabytes:.2f} MB"
+        )
     elif megabytes < 1024**2:
         size = megabytes / 1024
-        return f"{size:.0f} GB" if size.is_integer() else f"{size:.2f} GB"
+        return f"{size:.0f} GB" if float(size).is_integer() else f"{size:.2f} GB"
     else:
         size = megabytes / 1024**2
-        return f"{size:.0f} TB" if size.is_integer() else f"{size:.2f} TB"
+        return f"{size:.0f} TB" if float(size).is_integer() else f"{size:.2f} TB"
 
 def handle_ec2_instance(session, account_name, region):
     client = session.client('ec2', region_name=region)
