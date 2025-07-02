@@ -50,5 +50,8 @@ def handle_lambda(session, account_name, region):
 
         return lambda_data
     except (botocore.exceptions.BotoCoreError, botocore.exceptions.ClientError) as error:
-        print(f"Error getting details for Lambda function {function['FunctionName']}: {error}")
+        # ``function`` may not be defined if the failure occurs before iterating
+        # over any Lambda functions. Avoid referencing it directly in the error
+        # message to prevent ``NameError``.
+        print(f"Error getting details for Lambda functions: {error}")
         return []
